@@ -1,0 +1,1 @@
+SELECT * FROM lib_excersice.authors;

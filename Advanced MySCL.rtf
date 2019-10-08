@@ -1,0 +1,122 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf600
+{\fonttbl\f0\fmodern\fcharset0 Courier-Bold;\f1\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;\red83\green83\blue83;\red241\green241\blue241;}
+{\*\expandedcolortbl;;\cssrgb\c40000\c40000\c40000;\cssrgb\c95686\c95686\c95686;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww17200\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\sl340\partightenfactor0
+
+\f0\b\fs30 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\ul \ulc2 Lab | Advanced MySQL\
+\
+\pard\pardeftab720\sl340\partightenfactor0
+
+\f1\b0 \cf2 \cb3 \ulnone \
+***********************************************************************************
+\f0\b \cb3 \
+
+\f1\b0 \cb3 \
+
+\f0\b \cb3 ## Challenge 1 - Most Profiting Authors: \
+
+\f1\b0 \cb3 \
+***********************************************************************************\
+\
+### Step 1: Calculate the royalties of each sales for each author\
+\
+SELECT sales.title_id AS Title_ID, \
+authors.au_id AS Author_ID, \
+( titles.price * sales.qty * titles.royalty / 100 * titleauthor.royaltyper / 100) AS sales_royalty \
+FROM sales, titleauthor, titles, Authors\
+WHERE \
+authors.au_id = titleauthor.au_id \
+AND titleauthor.title_id = sales.title_id\
+AND sales.title_id = titles.title_id\
+;\
+\
+### Step 2: Aggregate the total royalties for each title for each author\
+\
+SELECT Title_ID, Author_ID, SUM(sales_royalty) AS Total_Royalty\
+FROM \
+(SELECT sales.title_id AS Title_ID, \
+authors.au_id AS Author_ID, \
+( titles.price * sales.qty * titles.royalty / 100 * titleauthor.royaltyper / 100) AS sales_royalty \
+FROM sales, titleauthor, titles, Authors\
+WHERE \
+authors.au_id = titleauthor.au_id \
+AND titleauthor.title_id = sales.title_id\
+AND sales.title_id = titles.title_id\
+) Summary \
+group by Author_ID, Title_ID;\
+\
+\
+### Step 3: Calculate the total profits of each author\
+\
+SELECT Author_ID, (advance + sum(sales_royalty))AS total_profit\
+FROM \
+(SELECT sales.title_id AS Title_ID, titles.advance AS advance, \
+authors.au_id AS Author_ID, \
+( titles.price * sales.qty * titles.royalty / 100 * titleauthor.royaltyper / 100) AS sales_royalty \
+FROM sales, titleauthor, titles, Authors\
+WHERE \
+authors.au_id = titleauthor.au_id \
+AND titleauthor.title_id = sales.title_id\
+AND sales.title_id = titles.title_id\
+) Summary \
+group by Author_ID, advance\
+order by total_profit DESC\
+LIMIT 3;\
+\
+***********************************************************************************\
+\
+## Challenge 2 - Alternative Solution\
+\
+***********************************************************************************\
+\
+\
+CREATE TEMPORARY TABLE Summary2\
+\
+SELECT sales.title_id AS Title_ID, titles.advance AS advance, \
+authors.au_id AS Author_ID, \
+( titles.price * sales.qty * titles.royalty / 100 * titleauthor.royaltyper / 100) AS sales_royalty \
+FROM sales, titleauthor, titles, Authors\
+WHERE \
+authors.au_id = titleauthor.au_id \
+AND titleauthor.title_id = sales.title_id\
+AND sales.title_id = titles.title_id\
+\
+\
+SELECT Author_ID, (advance + sum(sales_royalty))AS total_profit\
+FROM \
+Summary2\
+group by Author_ID, advance\
+order by total_profit DESC\
+LIMIT 3;\
+\
+***********************************************************************************\
+\
+## Challenge 3 \
+\
+***********************************************************************************\
+\
+\
+\
+CREATE TABLE most_profiting_authors\
+SELECT Author_ID, (advance + sum(sales_royalty))AS total_profit\
+FROM \
+(SELECT sales.title_id AS Title_ID, titles.advance AS advance, \
+authors.au_id AS Author_ID, \
+( titles.price * sales.qty * titles.royalty / 100 * titleauthor.royaltyper / 100) AS sales_royalty \
+FROM sales, titleauthor, titles, Authors\
+WHERE \
+authors.au_id = titleauthor.au_id \
+AND titleauthor.title_id = sales.title_id\
+AND sales.title_id = titles.title_id\
+) Summary \
+group by Author_ID, advance\
+order by total_profit DESC\
+;\
+\
+\
+\
+}
