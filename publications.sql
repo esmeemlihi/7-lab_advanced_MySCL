@@ -19,6 +19,10 @@
 -- Table structure for table `authors`
 --
 
+'''
+L.S. Very good!
+'''
+
 DROP TABLE IF EXISTS `authors`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -39,6 +43,11 @@ CREATE TABLE `authors` (
 --
 -- Dumping data for table `authors`
 --
+
+
+'''
+L.S. Commands are correct. 
+'''
 
 LOCK TABLES `authors` WRITE;
 /*!40000 ALTER TABLE `authors` DISABLE KEYS */;
@@ -77,6 +86,10 @@ UNLOCK TABLES;
 --
 -- Table structure for table `employee`
 --
+
+'''
+L.S. Nice!
+'''
 
 DROP TABLE IF EXISTS `employee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -153,6 +166,10 @@ CREATE TABLE `pub_info` (
 --
 -- Dumping data for table `pub_info`
 --
+
+'''
+L.S. Good! 
+'''
 
 LOCK TABLES `pub_info` WRITE;
 /*!40000 ALTER TABLE `pub_info` DISABLE KEYS */;
@@ -305,6 +322,10 @@ UNLOCK TABLES;
 --
 -- Table structure for table `titles`
 --
+
+'''
+L.S. Correct!
+'''
 
 DROP TABLE IF EXISTS `titles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
